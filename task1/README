@@ -4,8 +4,10 @@ make run_g   // Запуск на GPU
 make run_cg  // Запуск для сравнения CPU и GPU
 make clean   // Очистка
 
-Таблица с результатами:
+CPU: IBM POWER8
+GPU: Tesla P100-SXM2
 
+Таблица с результатами:
 | L    | CPU time | GPU time | GPU time/CPU time |
 |------|----------|----------|-------------------|
 | 100  | 0.52     | 0.05     | 10.107            |
