@@ -1,8 +1,8 @@
-make build  // компиляция
-make run_c  // Запуск на CPU
-make run_g  // Запуск на GPU
+make build   // компиляция
+make run_c   // Запуск на CPU
+make run_g   // Запуск на GPU
 make run_cg  // Запуск для сравнения CPU и GPU
-make clean  // Очистка
+make clean   // Очистка
 
 Полученные данные:
 | L    | CPU time | GPU time |GPU time/CPU time|
