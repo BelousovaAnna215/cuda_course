@@ -4,7 +4,7 @@ SRC = jacobi.cu
 .PHONY: all clean build run run_c run_g run_cg
 
 $(TARGET):
-	nvcc $(SRC) -o $(TARGET)
+	nvcc $(SRC) -O3 -o $(TARGET)
 
 all: clean build
 
