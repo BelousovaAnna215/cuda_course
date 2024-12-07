@@ -11,9 +11,9 @@ using namespace std;
 #define Max(a, b) ((a) > (b) ? (a) : (b))
 #define ind(i, j, k) (((i)*ny + (j))*nz + (k))
 
-#define nx 800
-#define ny 800
-#define nz 800
+#define nx 700
+#define ny 700
+#define nz 700
 
 __global__ void kernel_step_1(double *A) {
     int j = blockIdx.x * blockDim.x + threadIdx.x;
