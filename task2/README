@@ -1,0 +1,10 @@
+make build   // компиляция
+make run_c   // Запуск на CPU
+make run_g   // Запуск на GPU
+make run_cg  // Запуск для сравнения CPU и GPU
+make clean   // Очистка
+
+CPU: IBM POWER8
+GPU: Tesla P100-SXM2
+
+Таблица с результатами:
