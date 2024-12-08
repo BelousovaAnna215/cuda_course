@@ -11,13 +11,13 @@ using namespace std;
 #define Max(a, b) ((a) > (b) ? (a) : (b))
 #define ind(i, j, k) (((i)*ny + (j))*nz + (k))
 
-#define nx 700
-#define ny 700
-#define nz 700
+#define nx 1000
+#define ny 1000
+#define nz 1000
 
 __global__ void kernel_step_1(double *A) {
-    int j = blockIdx.x * blockDim.x + threadIdx.x;
-    int k = blockIdx.y * blockDim.y + threadIdx.y;
+    int k = blockIdx.x * blockDim.x + threadIdx.x;
+    int j = blockIdx.y * blockDim.y + threadIdx.y;
 
     if (j > 0 && j < ny - 1)
         if (k > 0 && k < nz - 1) {
@@ -28,8 +28,8 @@ __global__ void kernel_step_1(double *A) {
 }
 
 __global__ void kernel_step_2(double *A) {
-    int i = blockIdx.x * blockDim.x + threadIdx.x;
-    int k = blockIdx.y * blockDim.y + threadIdx.y;
+    int k = blockIdx.x * blockDim.x + threadIdx.x;
+    int i = blockIdx.y * blockDim.y + threadIdx.y;
 
     if (i > 0 && i < nx - 1)
         if (k > 0 && k < nz - 1) {
@@ -40,8 +40,8 @@ __global__ void kernel_step_2(double *A) {
 }
 
 __global__ void kernel_step_3_eps(double *A, double *E) {
-    int i = blockIdx.x * blockDim.x + threadIdx.x;
-    int j = blockIdx.y * blockDim.y + threadIdx.y;
+    int j = blockIdx.x * blockDim.x + threadIdx.x;
+    int i = blockIdx.y * blockDim.y + threadIdx.y;
 
     if (i > 0 && i < nx - 1) {
         if (j > 0 && j < ny - 1) {
