@@ -14,13 +14,13 @@ clean:
 	rm -rf $(TARGET)
 
 run_c: build
-	bsub -gpu num=1:mode=exclusive_process "./$(TARGET) c >output 2>error"
+	bsub -gpu num=1:mode=exclusive_process -x "./$(TARGET) c >output 2>error"
 
 run_g: build
-	bsub -gpu num=1:mode=exclusive_process "./$(TARGET) g >output 2>error"
+	bsub -gpu num=1:mode=exclusive_process -x "./$(TARGET) g >output 2>error"
 
 run_cg: build
-	bsub -gpu num=1:mode=exclusive_process "./$(TARGET) cg >output 2>error"
+	bsub -gpu num=1:mode=exclusive_process -x "./$(TARGET) cg >output 2>error"
 
 
 run: 
