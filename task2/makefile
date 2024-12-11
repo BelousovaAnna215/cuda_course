@@ -4,7 +4,7 @@ SRC = adi.cu
 .PHONY: all clean build run run_c run_g run_cg
 
 $(TARGET):
-	nvcc -std=c++11 $(SRC) -O3 -o $(TARGET)
+	nvcc -std=c++11 --extended-lambda $(SRC) -O3 -o $(TARGET)
 
 all: clean build
 
