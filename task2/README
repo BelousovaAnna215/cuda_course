@@ -1,8 +1,6 @@
-make build   // компиляция
-make run_c   // Запуск на CPU
-make run_g   // Запуск на GPU
-make run_cg  // Запуск для сравнения CPU и GPU
-make clean   // Очистка
+make run_c ARGS="nx ny nz"  // Запуск на CPU
+make run_g ARGS="nx ny nz"  // Запуск на GPU
+make run_cg ARGS="nx ny nz" // Запуск для сравнения CPU и GPU
 
 CPU: IBM POWER8
 GPU: Tesla P100-SXM2
@@ -14,3 +12,6 @@ GPU: Tesla P100-SXM2
 | 384  | 384  | 384  | 26.01    | 1.44     |   18.093          |
 | 600  | 600  | 600  | 106.05   | 5.85     |   18.124          |
 | 800  | 800  | 800  | 238.13   | 12.90    |   18.465          |
+| 100  | 200  | 300  | 0.41     | 0.06     |   6.983           |
+| 384  | 244  | 456  | 26.01    | 1.44     |   18.093          |
+| 700  | 500  | 600  | 106.05   | 5.85     |   18.124          |
