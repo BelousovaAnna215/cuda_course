@@ -139,22 +139,22 @@ int main(int argc, char *argv[]) {
     float time_taken_gpu = 0;
     
     try {
-		  nx = std::atoi(argv[2]);
-		  ny = std::atoi(argv[3]);
-		  nz = std::atoi(argv[4]);
-
-		  if (strcmp(argv[1], "c") == 0) {
-			cpu = true;
-		  } else if (strcmp(argv[1], "g") == 0) {
-			gpu = true;
-		  } else if (strcmp(argv[1], "cg") == 0) {
-			cpu = true;
-			gpu = true;
-		  }
-	} catch (...) {
-		std::cout << "format is ./adi MODE NX NY NZ" << std::endl;
-		exit(1);
-	};
+	  nx = std::atoi(argv[2]);
+	  ny = std::atoi(argv[3]);
+	  nz = std::atoi(argv[4]);
+	
+	  if (strcmp(argv[1], "c") == 0) {
+		cpu = true;
+	  } else if (strcmp(argv[1], "g") == 0) {
+		gpu = true;
+	  } else if (strcmp(argv[1], "cg") == 0) {
+		cpu = true;
+		gpu = true;
+	  }
+    } catch (...) {
+	std::cout << "format is ./adi MODE NX NY NZ" << std::endl;
+	exit(1);
+    };
 
     double* A = new double[nx * ny * nz];
 
@@ -219,44 +219,44 @@ int main(int argc, char *argv[]) {
         
         
         dim3 block(TILE_SIZE, TILE_SIZE);
-		dim3 grid_1((ny + block.x - 1) / block.x, (nz + block.y - 1) / block.y);
-		dim3 grid_2((nx + block.x - 1) / block.x, (nz + block.y - 1) / block.y);
+	dim3 grid_1((ny + block.x - 1) / block.x, (nz + block.y - 1) / block.y);
+	dim3 grid_2((nx + block.x - 1) / block.x, (nz + block.y - 1) / block.y);
 
-		dim3 bt(TILE_SIZE, ROWS);
-		dim3 grid_transpose((nx + TILE_SIZE - 1) / TILE_SIZE, ny,
-							(nz + TILE_SIZE - 1) / TILE_SIZE);
+	dim3 bt(TILE_SIZE, ROWS);
+	dim3 grid_transpose((nx + TILE_SIZE - 1) / TILE_SIZE, ny,
+			    (nz + TILE_SIZE - 1) / TILE_SIZE);
 
-		dim3 grid_1_in_transposed((ny + block.x - 1) / block.x,
-								  (nx + block.y - 1) / block.y);
+	dim3 grid_1_in_transposed((ny + block.x - 1) / block.x,
+				  (nx + block.y - 1) / block.y);
 
-		dim3 grid_transpose_back((nz + TILE_SIZE - 1) / TILE_SIZE, ny,
-								 (nx + TILE_SIZE - 1) / TILE_SIZE);
+	dim3 grid_transpose_back((nz + TILE_SIZE - 1) / TILE_SIZE, ny,
+			         (nx + TILE_SIZE - 1) / TILE_SIZE);
 
         cudaEvent_t start_time, end_time;
         cudaEventCreate(&start_time);
         cudaEventCreate(&end_time);
         cudaEventRecord(start_time, 0);
 
-		double* A_ptr = thrust::raw_pointer_cast(d_A.data());
-		double* A_trans_ptr = thrust::raw_pointer_cast(A_trans.data());
-		double* A2_ptr = thrust::raw_pointer_cast(d_A2.data());
+	double* A_ptr = thrust::raw_pointer_cast(d_A.data());
+	double* A_trans_ptr = thrust::raw_pointer_cast(A_trans.data());
+	double* A2_ptr = thrust::raw_pointer_cast(d_A2.data());
 		
         for (int it = 1; it <= itmax; it++) {
 
             kernel_step_1<<<grid_1, block>>>(A_ptr, nx, ny, nz);
-			cudaDeviceSynchronize();
+	    cudaDeviceSynchronize();
 
             kernel_step_2<<<grid_2, block>>>(A_ptr, nx, ny, nz);
-			cudaDeviceSynchronize();
+	    cudaDeviceSynchronize();
 
-			transpose<<<grid_transpose, bt>>>(A_ptr, A_trans_ptr, nx, ny, nz);
-			cudaDeviceSynchronize();
-			kernel_step_1<<<grid_1_in_transposed, block>>>(A_trans_ptr, nz, ny, nx);
-			cudaDeviceSynchronize();
-			transpose<<<grid_transpose_back, bt>>>(A_trans_ptr, A2_ptr, nz, ny, nx);
-			cudaDeviceSynchronize();
+	    transpose<<<grid_transpose, bt>>>(A_ptr, A_trans_ptr, nx, ny, nz);
+	    cudaDeviceSynchronize();
+	    kernel_step_1<<<grid_1_in_transposed, block>>>(A_trans_ptr, nz, ny, nx);
+	    cudaDeviceSynchronize();
+	    transpose<<<grid_transpose_back, bt>>>(A_trans_ptr, A2_ptr, nz, ny, nx);
+	    cudaDeviceSynchronize();
 
-			thrust::transform(d_A.begin(), d_A.end(), d_A2.begin(), eps_diff.begin(), thrust::minus<double>());
+	    thrust::transform(d_A.begin(), d_A.end(), d_A2.begin(), eps_diff.begin(), thrust::minus<double>());
             
             double eps = thrust::transform_reduce(eps_diff.begin(), eps_diff.end(),
 						[] __device__(double x) { return x < 0.0 ? -x : x; }, 0.0,
